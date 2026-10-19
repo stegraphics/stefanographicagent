@@ -14,16 +14,18 @@ import {
 } from 'lucide-react';
 
 const VIDEO_MARQUEE = [
-  '/videos/IMG_5939.MOV',
-  '/videos/IMG_6009.MOV',
-  '/videos/IMG_6042.MOV',
-  '/videos/IMG_6155.MOV',
-  '/videos/IMG_6572.MOV',
+  '/videos/IMG_5939.mp4',
+  '/videos/IMG_6009.mp4',
+  '/videos/IMG_6042.mp4',
+  '/videos/IMG_6155.mp4',
+  '/videos/IMG_6572.mp4',
   '/videos/IMG_6613.MP4',
   '/videos/IMG_6935.MP4',
   '/videos/IMG_6936.MP4',
-  '/videos/IMG_6796.MOV',
-  '/videos/IMG_5663.MOV',
+  '/videos/IMG_6796.mp4',
+  '/videos/IMG_5663.mp4',
+  '/videos/IMG_6941.mp4',
+  '/videos/IMG_6944.mp4',
 ];
 
 function App() {
@@ -172,7 +174,7 @@ function App() {
           }}
         />
 
-        <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center w-full">
+        <div className="relative max-w-3xl mx-auto px-6 w-full">
           <div>
             <p className="Stiledicaratterenormale mb-3">
               Social Media Manager/Video Editor
@@ -209,7 +211,7 @@ function App() {
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 max-w-md">
               {[
-                { num: '500+', label: 'Videos created' },
+                { num: '150+', label: 'Videos created' },
                 { num: '1M+', label: 'Views' },
                 { num: '120+', label: 'Happy clients' },
               ].map((s) => (
@@ -220,51 +222,6 @@ function App() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Hero visual */}
-          <div className="relative hidden lg:block">
-            <div className="relative aspect-square max-w-lg ml-auto">
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-red-600/30 to-transparent blur-2xl" />
-              <div className="relative w-full h-full rounded-3xl border border-red-600/30 bg-gradient-to-br from-zinc-900 to-black overflow-hidden">
-                {/* Mock editing interface */}
-                <div className="absolute top-0 left-0 right-0 h-10 bg-zinc-900/80 border-b border-red-600/20 flex items-center px-4 gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-red-500" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-600" />
-                  <span className="text-xs text-gray-500 ml-3">project_reel_v3.mp4</span>
-                </div>
-
-                {/* Preview area */}
-                <div className="absolute top-10 left-0 right-0 bottom-32 flex items-center justify-center p-6">
-                  <div className="relative w-full aspect-video rounded-xl overflow-hidden bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center border border-red-600/20">
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_40%,rgba(239,68,68,0.25),transparent_60%)]" />
-                    <button className="relative w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl shadow-red-900/60 hover:scale-110 transition-transform">
-                      <Play className="w-7 h-7 text-white ml-1" fill="white" />
-                    </button>
-                    <div className="absolute bottom-3 left-3 right-3 flex items-center gap-2">
-                      <div className="h-1 flex-1 bg-zinc-700 rounded-full overflow-hidden">
-                        <div className="h-full w-1/3 bg-red-500" />
-                      </div>
-                      <span className="text-[10px] text-gray-400">0:42 / 2:15</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Timeline */}
-                <div className="absolute bottom-0 left-0 right-0 h-32 bg-zinc-900/80 border-t border-red-600/20 p-3 space-y-2">
-                  {[
-                    { w: '60%', c: 'from-red-500 to-red-700' },
-                    { w: '85%', c: 'from-zinc-600 to-zinc-700' },
-                    { w: '40%', c: 'from-red-600 to-red-800' },
-                  ].map((t, i) => (
-                    <div key={i} className="h-6 bg-black/40 rounded flex items-center px-2 gap-1">
-                      <div className={`h-4 rounded bg-gradient-to-r ${t.c}`} style={{ width: t.w }} />
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
