@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.Stiledicaratterenormale1 {
+  font-family: 'Jellyka Delicious Cake';
+  font-size: clamp(40px, 6.5vw, 64px);
+  color: #e52421;
+}
+
+.Stiledicaratterenormale {
+  font-family: 'Adobe Song Std';
+  font-size: 17px;
+  color: #ffffff;
+}
