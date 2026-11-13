@@ -28,19 +28,37 @@ const VIDEO_MARQUEE = [
   '/videos/IMG_6944.mp4',
 ];
 
-function App() {
-  const [formSent, setFormSent] = useState(false);
-  const [formSending, setFormSending] = useState(false);
-  const [formError, setFormError] = useState('');
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+const BEST_EDIT = [
+  '/videos/IMG_7066.mp4',
+  '/videos/Agenzia-immobiliare.mp4',
+  '/videos/Video-dentista-1.mp4',
+  '/videos/IMG_7915.mp4',
+  '/videos/IMG_7990.mp4',
+  '/videos/Ditta-edile.mp4',
+];
 
+type VideoMarqueeProps = {
+  videos: string[];
+  onVideoClick: (src: string) => void;
+  id?: string;
+  className?: string;
+  cardClassName?: string;
+};
+
+function VideoMarquee({
+  videos,
+  onVideoClick,
+  id,
+  className = '',
+  cardClassName = 'w-40 md:w-56',
+}: VideoMarqueeProps) {
   const marqueeRef = useRef<HTMLDivElement | null>(null);
   const trackRef = useRef<HTMLDivElement | null>(null);
   const offsetRef = useRef(0);
   const pausedRef = useRef(false);
   const dragRef = useRef({ dragging: false, startX: 0, startOffset: 0, moved: 0 });
 
-  // Scorrimento automatico verso sinistra + sbloccato al passaggio del mouse
+  // Scorrimento automatico verso sinistra + pausa al passaggio del mouse
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return;
@@ -103,6 +121,69 @@ function App() {
   const endDrag = () => {
     dragRef.current.dragging = false;
   };
+
+  return (
+    <div
+      id={id}
+      ref={marqueeRef}
+      onMouseEnter={() => {
+        pausedRef.current = true;
+      }}
+      onMouseLeave={() => {
+        pausedRef.current = false;
+        endDrag();
+      }}
+      onPointerDown={startDrag}
+      onPointerMove={moveDrag}
+      onPointerUp={endDrag}
+      onPointerLeave={endDrag}
+      onPointerCancel={endDrag}
+      style={{ touchAction: 'pan-y' }}
+      className={`overflow-hidden cursor-grab select-none ${className}`}
+    >
+      <div ref={trackRef} className="flex w-max">
+        {[...videos, ...videos].map((src, i) => (
+          <button
+            key={`${src}-${i}`}
+            type="button"
+            onClick={(e) => {
+              if (dragRef.current.moved > 6) {
+                e.preventDefault();
+                return;
+              }
+              onVideoClick(src);
+            }}
+            aria-label="Riproduci video"
+            className={`group relative shrink-0 mr-4 ${cardClassName} aspect-[9/16] rounded-2xl overflow-hidden border border-red-600/30 bg-zinc-900`}
+          >
+            <video
+              src={src}
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
+              className="w-full h-full object-cover"
+            />
+            <span className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors" />
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="w-10 h-10 rounded-full bg-red-600/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
+              </span>
+            </span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function App() {
+  const [formSent, setFormSent] = useState(false);
+  const [formSending, setFormSending] = useState(false);
+  const [formError, setFormError] = useState('');
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [showBestEdits, setShowBestEdits] = useState(false);
 
   // Invio del form via FormSubmit: l'email arriva a stefanoschifanographic@gmail.com
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -198,6 +279,13 @@ function App() {
               >
                 <Play className="w-5 h-5" /> Show Portfolio
               </a>
+              <button
+                type="button"
+                onClick={() => setShowBestEdits(true)}
+                className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-500 px-7 py-3.5 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-red-900/40 hover:shadow-red-700/60 hover:scale-105"
+              >
+                <Sparkles className="w-5 h-5" /> Best edits
+              </button>
               <a
                 href="https://www.instagram.com/stefanographicagent?psln=bmdjbnR3cHhrcmxl&utm_source=qr"
                 target="_blank"
@@ -227,58 +315,12 @@ function App() {
         </div>
 
         {/* VIDEO MARQUEE */}
-        <div
+        <VideoMarquee
           id="videos"
-          ref={marqueeRef}
-          onMouseEnter={() => {
-            pausedRef.current = true;
-          }}
-          onMouseLeave={() => {
-            pausedRef.current = false;
-            endDrag();
-          }}
-          onPointerDown={startDrag}
-          onPointerMove={moveDrag}
-          onPointerUp={endDrag}
-          onPointerLeave={endDrag}
-          onPointerCancel={endDrag}
-          style={{ touchAction: 'pan-y' }}
-          className="relative w-full mt-16 scroll-mt-28 overflow-hidden cursor-grab select-none"
-        >
-          <div ref={trackRef} className="flex w-max">
-            {[...VIDEO_MARQUEE, ...VIDEO_MARQUEE].map((src, i) => (
-              <button
-                key={`${src}-${i}`}
-                type="button"
-                onClick={(e) => {
-                  if (dragRef.current.moved > 6) {
-                    e.preventDefault();
-                    return;
-                  }
-                  setActiveVideo(src);
-                }}
-                aria-label="Riproduci video"
-                className="group relative shrink-0 mr-4 w-40 md:w-56 aspect-[9/16] rounded-2xl overflow-hidden border border-red-600/30 bg-zinc-900"
-              >
-                <video
-                  src={src}
-                  muted
-                  loop
-                  autoPlay
-                  playsInline
-                  preload="metadata"
-                  className="w-full h-full object-cover"
-                />
-                <span className="absolute inset-0 bg-black/40 group-hover:bg-black/10 transition-colors" />
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="w-10 h-10 rounded-full bg-red-600/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Play className="w-4 h-4 text-white ml-0.5" fill="white" />
-                  </span>
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
+          videos={VIDEO_MARQUEE}
+          onVideoClick={(src) => setActiveVideo(src)}
+          className="relative w-full mt-16 scroll-mt-28"
+        />
       </section>
 
       {/* LOGO STRIP */}
@@ -549,6 +591,30 @@ function App() {
           </p>
         </div>
       </footer>
+
+      {/* BEST EDITS PANEL */}
+      {showBestEdits && (
+        <div className="fixed inset-0 z-[55] bg-black/95 backdrop-blur-sm flex flex-col justify-center">
+          <div className="w-full max-w-7xl mx-auto px-6 flex items-center justify-between mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Best <span className="text-red-500">Edit</span>
+            </h2>
+            <button
+              type="button"
+              onClick={() => setShowBestEdits(false)}
+              aria-label="Chiudi"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-red-600 flex items-center justify-center transition-colors"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          </div>
+          <VideoMarquee
+            videos={BEST_EDIT}
+            onVideoClick={(src) => setActiveVideo(src)}
+            className="w-full"
+          />
+        </div>
+      )}
 
       {/* VIDEO LIGHTBOX */}
       {activeVideo && (
